@@ -27,5 +27,66 @@ Use glimpse() to view the variable names which are followed by abbreviations of 
 
 glimpse(electric_vehicle_population)
 
+```
+
+Use clean_names() from the janitor package, takes the existing column names of your data set, converts them all to lowercase letters and numbers, and separates all words using the underscore character.
+
+```{r}
+
+electric_vehicle_population <- electric_vehicle_population |> 
+  janitor::clean_names()
+
+colnames(electric_vehicle_population)
+
+```
+
+Use skim() from the skimr package allows us to get a snapshot of the entire data set, rather than just one variable. This is a great way of getting a quick sense of your data.
+
+We see few variables have missing values. Variable electric_utility has the highest missing value at 469, legislative_district has the 2nd highest missing values at 297, and model has the 3rd highest missing values at 104. Also, we can see variable electric_range distribution is skewed to the right. Keep in mind that the data set consist of vehicles that are Battery Electric Vehicle (BEV) and Plug-in Hybrid Electric Vehicle (PHEV). Thus. a reason for a positive skewed(Right-Skewed) distribution is likely due to the low electric range of a PHEV and older BEV vehicles.
+
+```{r}
+
+skimr::skim(electric_vehicle_population)
+
+```
+
+For this EDA we are only interested in the following columns; Select all columns except those from base_msrp to x2020_census_tract (inclusive):
+
+```{r}
+
+electric_vehicle_population <- electric_vehicle_population |> 
+  select(!base_msrp:x2020_census_tract)
+
+```
+
+We will count the number of missing values in each variable in the data set.
+
+```{r}
+
+electric_vehicle_population |> 
+  map(is.na) |> 
+  map(sum)
+
+```
+
+Lets filter to see which observations have missing data in variable model.
+
+We see the entries with missing values for models are from the make Volvo and model year is 2023 and their clean_alternative_fuel_vehicle_cafv_eligibility is equal to Eligibility unknown as battery range has not been researched. For the purpose of this EDA we will not drop these missing values. The missing values could potentially be due to the lack of information on the latest EV Volvo model provided when registering the car.
+
+```{r}
+
+electric_vehicle_population |> 
+  filter(is.na(model))
+
+```
+
+Lets filter to see which observations having missing data in variable county.
+
+We see both data entries with missing county is also missing city and postal_code. A likely reason for the missing information is those registered cars through the Washington State Department of Licensing (DOL) are now residing outside the country( British Columbia is a province in Canada). For the purpose of the this EDA we will not drop these missing values.
+
+```{r}
+
+electric_vehicle_population |> 
+  filter(is.na(county))
 
 ```
