@@ -1,0 +1,31 @@
+---
+title: "EV Project"
+author: "Cristian Andres"
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+editor: visual
+---
+
+# Data
+
+For this analysis we'll use the [data set of EVs that are currently registered through The State of Washington.](https://www.kaggle.com/datasets/usamabuttar/electric-vehicle-population-data-washington-us)
+
+```{r}
+#| label: load-packages
+#| message: false
+
+library(tidyverse)
+electric_vehicle_population <-read_csv("Electric_Vehicle_Population_Data.csv")
+
+```
+
+Use glimpse() to view the variable names which are followed by abbreviations of the type of each variable such as \<chr\> for character (aka strings) and \<dbl\> is short for double (aka real numbers). Also, it shows the number of observations 121,978 and variables 17.
+
+```{r}
+
+glimpse(electric_vehicle_population)
+
+
+```
